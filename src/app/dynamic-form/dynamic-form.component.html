@@ -1,1 +1,42 @@
-<p>dynamic-form works!</p>
+<!-- dynamic-form.component.html -->
+<form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" class="dynamic-form">
+    <!-- FormArray for dynamicFields -->
+    <div formArrayName="dynamicFields">
+        <!-- Iterate over dynamicFields FormArray -->
+        <div *ngFor="let field of dynamicFields.controls; let i = index;" class="form-group" [formGroupName]="i">
+            <!-- Input for field name -->
+            <label for="fieldName{{i}}">Name</label>
+            <input id="fieldName{{i}}" formControlName="name" placeholder="Enter field name">
+
+            <!-- Select for field type -->
+            <label for="fieldType{{i}}">Type</label>
+            <select id="fieldType{{i}}" formControlName="type">
+                <option value="text">Text</option>
+                <option value="number">Number</option>
+                <!-- Add more options for other types as needed -->
+            </select>
+
+            <!-- Input for field value -->
+            <label for="fieldValue{{i}}">Value</label>
+            <input id="fieldValue{{i}}" formControlName="value" placeholder="Enter field value">
+
+            <!-- Button to delete the field -->
+            <button type="button" (click)="deleteField(i)" class="btn-delete">Delete</button>
+        </div>
+    </div>
+
+    <!-- Button to add a new field -->
+    <button type="button" (click)="addField()" class="btn-add">Add Field</button>
+
+    <!-- Button to submit the form -->
+    <button type="submit" class="btn-submit">Submit</button>
+
+    <!-- Button to reset the form -->
+    <button type="button" (click)="resetForm()" class="btn-reset">Reset</button>
+</form>
+
+<!-- Display submitted data -->
+<div *ngIf="submittedData" class="submitted-data">
+    <h2>Submitted Data</h2>
+    <pre>{{ submittedData | json }}</pre>
+</div>
