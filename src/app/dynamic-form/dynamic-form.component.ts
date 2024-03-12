@@ -26,8 +26,13 @@ export class DynamicFormComponent implements OnInit {
   }
 
   // Method to add a new field to the dynamicFields FormArray
-  addField() {
-    this.dynamicFields.push(this.createField()); // Push a new FormControl to the FormArray
+  addField(type: string = 'text') {
+    this.dynamicFields.push(this.createField(type)); // Push a new FormControl to the FormArray
+  }
+
+  // Method to add a "multiple-choice" field for selecting colors
+  addColorField() {
+    this.dynamicFields.push(this.createColorField()); // Push a new color field to the FormArray
   }
 
   // Method to handle form submission
@@ -44,12 +49,29 @@ export class DynamicFormComponent implements OnInit {
     this.dynamicFields.removeAt(index); // Remove the field at the specified index
   }
 
-  // Method to create a new FormControl representing a field
-  createField(): FormGroup {
+  createField(type: string, options?: string[]): FormGroup {
+    let defaultValue: any;
+    // Set default value based on field type
+    switch (type) {
+      case 'boolean':
+        defaultValue = false; // or true, depending on your requirement
+        break;
+      case 'multiple-choice':
+        defaultValue = options
+          ? options.map((option) => ({ value: option, checked: false }))
+          : [];
+        break;
+      default:
+        defaultValue = '';
+        break;
+    }
+
+    // Return a FormGroup with default values
     return this.formBuilder.group({
-      name: [''],   // Initialize with an empty string
-      type: ['text'],
-      value: ['']
+      name: [''],
+      type: [type],
+      value: [defaultValue],
+      options: [options || []], // Add options array with default value
     });
   }
 
@@ -57,5 +79,28 @@ export class DynamicFormComponent implements OnInit {
   resetForm() {
     this.dynamicFields.clear(); // Remove all dynamic fields from the FormArray
     this.dynamicForm.reset(); // Reset the form to its initial state
+  }
+
+  // Method to handle change in field type
+  onTypeChange(selectedType: string, index: number) {
+    const fieldGroup = this.dynamicFields.at(index) as FormGroup;
+    const valueControl = fieldGroup.get('value');
+    if (valueControl) {
+      // Perform null check
+      if (selectedType === 'boolean') {
+        valueControl.setValue(true); // Set default value to true when type is boolean
+      } else {
+        valueControl.setValue(''); // Clear the value when type is not boolean
+      }
+    }
+  }
+
+  // Method to create a "multiple-choice" field for selecting colors
+  createColorField(): FormGroup {
+    // Define color options
+    const colorOptions = ['Red', 'Blue', 'Green', 'Yellow', 'Orange'];
+
+    // Create a field with type "multiple-choice" and color options
+    return this.createField('multiple-choice', colorOptions);
   }
 }

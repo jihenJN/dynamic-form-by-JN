@@ -14,11 +14,31 @@
                 <option value="text">Text</option>
                 <option value="number">Number</option>
                 <!-- Add more options for other types as needed -->
-            </select>
+                <option value="boolean">Boolean</option>
+                <option value="multiple-choice">Multiple Choice</option>
+            </select> <br>
 
             <!-- Input for field value -->
-            <label for="fieldValue{{i}}">Value</label>
-            <input id="fieldValue{{i}}" formControlName="value" placeholder="Enter field value">
+            <div *ngIf="field.value.type === 'boolean'">
+                <label>Value</label>
+                <div>
+                    <input type="radio" id="true{{i}}" [value]="true" formControlName="value">
+                    <label for="true{{i}}">True</label>
+                </div>
+                <div>
+                    <input type="radio" id="false{{i}}" [value]="false" formControlName="value">
+                    <label for="false{{i}}">False</label>
+                </div>
+            </div>
+            <div *ngIf="field.value.type === 'multiple-choice'">
+                <label>Value</label>
+                <div *ngFor="let option of field.value.options; let j = index;">
+                    <input type="checkbox" id="option{{j}}" [value]="option" formControlName="value">
+                    <label for="option{{j}}">{{ option }}</label>
+                </div>
+            </div>
+            <input *ngIf="field.value.type !== 'boolean' && field.value.type !== 'multiple-choice'" id="fieldValue{{i}}"
+                formControlName="value" placeholder="Enter field value">
 
             <!-- Button to delete the field -->
             <button type="button" (click)="deleteField(i)" class="btn-delete">Delete</button>
@@ -27,6 +47,7 @@
 
     <!-- Button to add a new field -->
     <button type="button" (click)="addField()" class="btn-add">Add Field</button>
+
 
     <!-- Button to submit the form -->
     <button type="submit" class="btn-submit">Submit</button>
