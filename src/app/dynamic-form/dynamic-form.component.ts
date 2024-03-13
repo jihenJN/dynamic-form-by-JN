@@ -40,6 +40,15 @@ export class DynamicFormComponent implements OnInit {
     console.log(this.dynamicForm.value); // Log the submitted form data
     this.submittedData = this.dynamicForm.value; // Store the submitted form data
 
+    // Update value property to directly store options array
+    this.dynamicForm.value.dynamicFields.forEach((field: any) => {
+      if (field.type === 'multiple-choice') {
+        field.value = { options: field.options || [] };
+      }
+    });
+
+
+
     // Reset the form to its initial state if needed
     this.dynamicForm.reset(); // Use reset() if you want to reset the form after submission
   }
@@ -71,7 +80,7 @@ export class DynamicFormComponent implements OnInit {
       name: [''],
       type: [type],
       value: [defaultValue],
-      options: [options || []], // Add options array with default value
+
     });
   }
 
@@ -103,4 +112,6 @@ export class DynamicFormComponent implements OnInit {
     // Create a field with type "multiple-choice" and color options
     return this.createField('multiple-choice', colorOptions);
   }
+
+
 }

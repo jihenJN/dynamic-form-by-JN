@@ -30,6 +30,7 @@
                     <label for="false{{i}}">False</label>
                 </div>
             </div>
+            
             <div *ngIf="field.value.type === 'multiple-choice'">
                 <label>Value</label>
                 <div *ngFor="let option of field.value.options; let j = index;">
@@ -37,6 +38,8 @@
                     <label for="option{{j}}">{{ option }}</label>
                 </div>
             </div>
+
+            
             <input *ngIf="field.value.type !== 'boolean' && field.value.type !== 'multiple-choice'" id="fieldValue{{i}}"
                 formControlName="value" placeholder="Enter field value">
 
