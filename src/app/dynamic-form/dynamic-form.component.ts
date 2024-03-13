@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 export class DynamicFormComponent implements OnInit {
   dynamicForm!: FormGroup; // Define the dynamicForm FormGroup
   submittedData: any = null; // To hold submitted data
-
+  colors = ['Red', 'Blue', 'Green', 'Yellow', 'Orange'];
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
