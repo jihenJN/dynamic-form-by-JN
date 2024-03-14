@@ -1,4 +1,3 @@
-<!-- dynamic-form.component.html -->
 <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" class="dynamic-form">
     <!-- FormArray for dynamicFields -->
     <div formArrayName="dynamicFields">
@@ -15,7 +14,6 @@
                 <option value="number">Number</option>
                 <!-- Add more options for other types as needed -->
                 <option value="boolean">Boolean</option>
-                <option value="multiple-choice">Multiple Choice</option>
             </select> <br>
 
             <!-- Input for field value -->
@@ -31,17 +29,8 @@
                 </div>
             </div>
 
-            <div *ngIf="field.value.type === 'multiple-choice'">
-                <label>Value</label>
-                <!-- Display color options as checkboxes -->
-                <div *ngFor="let option of colors">
-                    <input type="checkbox" [value]="option" formControlName="value">
-                    <label>{{ option }}</label>
-                </div>
-            </div>
-
-            <input *ngIf="field.value.type !== 'boolean' && field.value.type !== 'multiple-choice'" id="fieldValue{{i}}"
-                formControlName="value" placeholder="Enter field value">
+            <input *ngIf="field.value.type !== 'boolean'" id="fieldValue{{i}}" formControlName="value"
+                placeholder="Enter field value">
 
             <!-- Button to delete the field -->
             <button type="button" (click)="deleteField(i)" class="btn-delete">Delete</button>
@@ -50,7 +39,6 @@
 
     <!-- Button to add a new field -->
     <button type="button" (click)="addField()" class="btn-add">Add Field</button>
-
 
     <!-- Button to submit the form -->
     <button type="submit" class="btn-submit">Submit</button>

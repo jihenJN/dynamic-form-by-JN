@@ -1,6 +1,6 @@
 // dynamic-form.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 export class DynamicFormComponent implements OnInit {
   dynamicForm!: FormGroup; // Define the dynamicForm FormGroup
   submittedData: any = null; // To hold submitted data
-  colors = ['Red', 'Blue', 'Green', 'Yellow', 'Orange'];
+
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -30,45 +30,42 @@ export class DynamicFormComponent implements OnInit {
     this.dynamicFields.push(this.createField(type)); // Push a new FormControl to the FormArray
   }
 
-  // Method to add a "multiple-choice" field for selecting colors
-  addColorField() {
-    this.dynamicFields.push(this.createColorField()); // Push a new color field to the FormArray
-  }
-
   // Method to handle form submission
   onSubmit() {
-    console.log(this.dynamicForm.value); // Log the submitted form data
-    this.submittedData = this.dynamicForm.value; // Store the submitted form data
+    // Log the submitted form data
+    console.log(this.dynamicForm.value);
 
-    // Update value property to directly store options array
-    this.dynamicForm.value.dynamicFields.forEach((field: any) => {
-      if (field.type === 'multiple-choice') {
-        field.value = { options: field.options || [] };
-      }
-    });
+    // Store the submitted form data in the desired format
+    const formattedData = {
+      elements: this.dynamicForm.value.dynamicFields.map((field: any) => ({
+        name: field.name,
+        type: field.type,
+        value: field.value,
+      })),
+    };
 
+    // Log the formatted data
+    console.log(formattedData);
 
+    // Store the formatted data for further use
+    this.submittedData = formattedData;
 
     // Reset the form to its initial state if needed
-    this.dynamicForm.reset(); // Use reset() if you want to reset the form after submission
+    this.dynamicForm.reset();
   }
+
 
   // Method to delete a field from the dynamicFields FormArray
   deleteField(index: number) {
     this.dynamicFields.removeAt(index); // Remove the field at the specified index
   }
 
-  createField(type: string, options?: string[]): FormGroup {
+  createField(type: string): FormGroup {
     let defaultValue: any;
     // Set default value based on field type
     switch (type) {
       case 'boolean':
         defaultValue = false; // or true, depending on your requirement
-        break;
-      case 'multiple-choice':
-        defaultValue = options
-          ? options.map((option) => ({ value: option, checked: false }))
-          : [];
         break;
       default:
         defaultValue = '';
@@ -80,7 +77,6 @@ export class DynamicFormComponent implements OnInit {
       name: [''],
       type: [type],
       value: [defaultValue],
-
     });
   }
 
@@ -103,15 +99,4 @@ export class DynamicFormComponent implements OnInit {
       }
     }
   }
-
-  // Method to create a "multiple-choice" field for selecting colors
-  createColorField(): FormGroup {
-    // Define color options
-    const colorOptions = ['Red', 'Blue', 'Green', 'Yellow', 'Orange'];
-
-    // Create a field with type "multiple-choice" and color options
-    return this.createField('multiple-choice', colorOptions);
-  }
-
-
 }
