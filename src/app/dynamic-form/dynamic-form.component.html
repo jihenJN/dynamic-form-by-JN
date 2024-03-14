@@ -12,10 +12,13 @@
             <select id="fieldType{{i}}" formControlName="type">
                 <option value="text">Text</option>
                 <option value="boolean">Boolean</option>
+                <option value="checkbox">Multiple Choice</option>
                 <!-- Add more options for other types as needed -->
             </select> <br>
 
             <!-- Input for field value -->
+
+
             <div *ngIf="field.value.type === 'boolean'">
                 <label>Value</label>
                 <div>
@@ -28,8 +31,17 @@
                 </div>
             </div>
 
-            <input *ngIf="field.value.type !== 'boolean'" id="fieldValue{{i}}" formControlName="value"
-                placeholder="Enter field value">
+            <div *ngIf="field.value.type === 'checkbox'">
+                <label>Value</label>
+                <div *ngFor="let option of field.value.options; let j = index;">
+                    <input type="checkbox" id="option{{j}}" [value]="option" formControlName="value">
+                    <label for="option{{j}}">{{ option }}</label>
+                </div>
+            </div>
+
+
+            <input *ngIf="field.value.type !== 'boolean' && field.value.type !== 'checkbox'" id="fieldValue{{i}}"
+                formControlName="value" placeholder="Enter field value">
 
             <!-- Button to delete the field -->
             <button type="button" (click)="deleteField(i)" class="btn-delete">Delete</button>

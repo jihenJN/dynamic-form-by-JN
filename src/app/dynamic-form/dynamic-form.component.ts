@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 export class DynamicFormComponent implements OnInit {
   dynamicForm!: FormGroup; // Define the dynamicForm FormGroup
   submittedData: any = null; // To hold submitted data
+  choices = ["Item 1", "Item 2", "Item 3"];
 
   constructor(private formBuilder: FormBuilder) { }
 
@@ -50,6 +51,13 @@ export class DynamicFormComponent implements OnInit {
     // Store the formatted data for further use
     this.submittedData = formattedData;
 
+    // Update value property to directly store options array
+    this.dynamicForm.value.dynamicFields.forEach((field: any) => {
+      if (field.type === 'multiple-choice') {
+        field.value = this.choices;
+      }
+    });
+
     // Reset the form to its initial state if needed
     this.dynamicForm.reset();
   }
@@ -60,13 +68,20 @@ export class DynamicFormComponent implements OnInit {
     this.dynamicFields.removeAt(index); // Remove the field at the specified index
   }
 
-  createField(type: string): FormGroup {
+  createField(type: string, choices?: string[]): FormGroup {
     let defaultValue: any;
     // Set default value based on field type
     switch (type) {
       case 'boolean':
         defaultValue = false; // or true, depending on your requirement
         break;
+      case 'checkbox':
+        defaultValue = choices
+          ? choices.map((choice) => ({ value: choice, checked: false }))
+          : [];
+        break;
+
+
       default:
         defaultValue = '';
         break;
@@ -77,6 +92,7 @@ export class DynamicFormComponent implements OnInit {
       name: [''],
       type: [type],
       value: [defaultValue],
+      choices: [choices || []], // Add options array with default value
     });
   }
 
