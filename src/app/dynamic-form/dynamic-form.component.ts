@@ -42,6 +42,7 @@ export class DynamicFormComponent implements OnInit {
         name: field.name,
         type: field.type,
         value: field.value,
+        choices: field.type === 'checkbox' ? this.choices : [] // Include choices array only for checkbox type
       })),
     };
 
