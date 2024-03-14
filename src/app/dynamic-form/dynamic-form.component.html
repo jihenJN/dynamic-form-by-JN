@@ -65,3 +65,9 @@
     <h2>Submitted Data</h2>
     <pre>{{ submittedData | json }}</pre>
 </div>
+
+<!-- Display submitted data -->
+<div *ngIf="submittedData" class="submitted-data">
+    <h2>GUI Generator</h2>
+    <app-gui-generator></app-gui-generator>
+</div>
