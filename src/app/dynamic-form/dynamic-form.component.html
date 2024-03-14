@@ -34,8 +34,7 @@
             <div *ngIf="field.value.type === 'checkbox'">
                 <label>Value</label>
                 <div *ngFor="let option of choices; let j = index;">
-                    <input type="checkbox" [value]="option" [formControlName]="'value'"
-                        (change)="updateCheckboxValue(option, i)">
+                    <input type="checkbox" [value]="option" [formControlName]="'value'">
                     <label>{{ option }}</label>
                 </div>
             </div>

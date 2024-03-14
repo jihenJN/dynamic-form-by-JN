@@ -77,7 +77,7 @@ export class DynamicFormComponent implements OnInit {
         defaultValue = false; // or true, depending on your requirement
         break;
       case 'checkbox':
-        defaultValue = this.formBuilder.array([]); // Initialize as FormArray
+        defaultValue = []; // Initialize as empty array for checkbox type
         break;
 
 
@@ -115,15 +115,5 @@ export class DynamicFormComponent implements OnInit {
     }
   }
 
-  updateCheckboxValue(option: string, index: number) {
-    const fieldGroup = this.dynamicFields.at(index) as FormGroup;
-    const valueControls = fieldGroup.controls.value as FormArray;
-    const indexToUpdate = valueControls.value.indexOf(option);
 
-    if (indexToUpdate === -1) {
-      valueControls.push(this.formBuilder.control(option));
-    } else {
-      valueControls.removeAt(indexToUpdate);
-    }
-  }
 }
