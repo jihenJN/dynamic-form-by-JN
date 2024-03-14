@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { GuiGeneratorComponent } from './gui-generator/gui-generator.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -14,7 +15,8 @@ import { GuiGeneratorComponent } from './gui-generator/gui-generator.component';
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+  
   ],
   providers: [],
   bootstrap: [AppComponent]
