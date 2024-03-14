@@ -33,11 +33,14 @@
 
             <div *ngIf="field.value.type === 'checkbox'">
                 <label>Value</label>
-                <div *ngFor="let option of field.value.options; let j = index;">
-                    <input type="checkbox" id="option{{j}}" [value]="option" formControlName="value">
-                    <label for="option{{j}}">{{ option }}</label>
+                <div *ngFor="let option of choices; let j = index;">
+                    <input type="checkbox" [value]="option" [formControlName]="'value'"
+                        (change)="updateCheckboxValue(option, i)">
+                    <label>{{ option }}</label>
                 </div>
             </div>
+
+
 
 
             <input *ngIf="field.value.type !== 'boolean' && field.value.type !== 'checkbox'" id="fieldValue{{i}}"
